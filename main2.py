@@ -2,6 +2,7 @@ import importlib
 from pathlib import Path
 
 import csv
+import numpy as np
 
 from matplotlib.backends.backend_qtagg import (
     FigureCanvasQTAgg,
@@ -109,17 +110,27 @@ class SalesWindow(QMainWindow):
         self.ax.clear()
 
         if self.temperatures and self.profits:
-            self.ax.scatter(self.temperatures, self.profits, s=1)
+            x = np.array(self.temperatures)
+            y = np.array(self.profits)
+
+            self.ax.scatter(x, y, s=1, label="Daily Data")
+
+            m, b = np.polyfit(x, y, 1)
+            y_trend = m * x + b
+            self.ax.plot(x, y_trend, color="red", linewidth=1.5, label="Trendline")
+
+            equation = f"y = {m:.2f}x + {b:.2f}"
+            self.ax.text(0.05, 0.95, equation, transform=self.ax.transAxes, fontsize=10, verticalalignment="top")
 
         self.ax.spines['top'].set_visible(False)
         self.ax.spines['right'].set_visible(False)
 
+
         self.ax.set_title("Ice Cream Truck Profits vs. Outside Temperature")
-        self.ax.set_xlabel("Outside Temperature [°C]")
+        self.ax.set_xlabel("Outside Temperature [°F]")
         self.ax.set_ylabel("Ice Cream Profits [$]")
 
         self.canvas.draw()
-
 
     def open_about(self):
         about_module = importlib.import_module("About2")
