@@ -107,19 +107,19 @@ class SalesWindow(QMainWindow):
 
     def plot_data(self):
         self.ax.clear()
-        self.ax.plot(
-            [15, 20, 25, 30, 35],
-            [120, 180, 260, 340, 430],
-            marker="o",
-            color="#2f7f78",
-            linewidth=2.5,
-            markersize=7,
-        )
-        self.ax.set_xlabel("Temperature (°C)")
-        self.ax.set_ylabel("Profit")
-        self.ax.grid(True, linestyle="--", linewidth=0.7, alpha=0.35)
-        self.figure.tight_layout()
+
+        if self.temperatures and self.profits:
+            self.ax.scatter(self.temperatures, self.profits, s=1)
+
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
+
+        self.ax.set_title("Ice Cream Truck Profits vs. Outside Temperature")
+        self.ax.set_xlabel("Outside Temperature [°C]")
+        self.ax.set_ylabel("Ice Cream Profits [$]")
+
         self.canvas.draw()
+
 
     def open_about(self):
         about_module = importlib.import_module("About2")
