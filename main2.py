@@ -1,6 +1,8 @@
 import importlib
 from pathlib import Path
 
+import csv
+
 from matplotlib.backends.backend_qtagg import (
     FigureCanvasQTAgg,
     NavigationToolbar2QT,
@@ -88,8 +90,20 @@ class SalesWindow(QMainWindow):
             self.load_file(file_path)
 
     def load_file(self, file_path):
-        # TODO: Add CSV parsing and update self.temperatures and self.profits.
-        pass
+        if file_path:
+            self.temperatures.clear()
+            self.profits.clear()
+
+            with open(file_path, mode='r', encoding='utf-8-sig', newline='') as f:
+                reader = csv.reader(f)
+                next(reader)
+                for row in reader:
+                    if row:
+                        self.temperatures.append(float(row[0]))
+                        self.profits.append(float(row[1]))
+
+            self.plot_data()
+
 
     def plot_data(self):
         self.ax.clear()
