@@ -127,7 +127,7 @@ class SalesWindow(QMainWindow):
 
 
         self.ax.set_title("Ice Cream Truck Profits vs. Outside Temperature")
-        self.ax.set_xlabel("Outside Temperature [°F]")
+        self.ax.set_xlabel("Outside Temperature [°C]")
         self.ax.set_ylabel("Ice Cream Profits [$]")
 
         self.canvas.draw()
